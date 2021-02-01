@@ -3,6 +3,8 @@ package be.pxl.ja.exercise1;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StudentDao {
 
@@ -19,5 +21,21 @@ public class StudentDao {
 		students.add(new Student("Ivan", 2018, 66, LocalDate.of(1999, 3,21)));
 		students.add(new Student("John", 2017, 52, LocalDate.of(1997, 1,3)));
 		return students;
+	}
+
+	public static void main(String[] args) {
+		createStudents().stream()
+				.filter(s -> s.getDateOfBirth().getDayOfMonth() == LocalDate.now().getDayOfMonth())
+				.filter(s -> s.getDateOfBirth().getMonthValue() == LocalDate.now().getMonthValue())
+				.forEach(s -> System.out.println(s.getName()));
+
+		createStudents().stream()
+				.filter(c -> c.getName().toLowerCase().equals("carol"))
+				.forEach(c -> System.out.println(c.getName()));
+
+		List<Student> graduatet = createStudents().stream()
+				.filter(s -> s.getGraduationYear() == 2017)
+				.collect(Collectors.toList());
+		System.out.println();
 	}
 }
